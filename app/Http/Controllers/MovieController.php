@@ -6,8 +6,8 @@ use App\Models\Movie;
 
 class MovieController extends Controller{
     public function index(){
-        $movie = new Movie;
-        $movies = $movie->getAllMovies();
+        $movie = new Movie; //object
+        $movies = $movie->getAllMovies(); //akses method dari objek movie
 
         return response()->json($movies);
     }
