@@ -10,7 +10,7 @@ Route::get('/', function () {
 });
 
 Route::get('/genres', [ApiGenreController::class, 'index']);
-Route::get('/author', [AuthorController::class, 'index']);
-Route::get('/book', [BookController::class, 'index']);
+Route::get('/authors', [AuthorController::class, 'index']);
+Route::get('/books', [BookController::class, 'index']);
 
 ?>
