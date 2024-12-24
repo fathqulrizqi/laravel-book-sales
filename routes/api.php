@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\GenreController;
 use Illuminate\Http\Request;
@@ -11,4 +12,5 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/book', [BookController::class, 'index']);
 Route::get('/genre', [GenreController::class, 'index']);
+Route::get('/author', [AuthorController::class, 'index']);
 ?>
