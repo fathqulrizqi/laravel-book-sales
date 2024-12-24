@@ -60,3 +60,4 @@ class BookSeeder extends Seeder
         ]); 
     }
 }
+
