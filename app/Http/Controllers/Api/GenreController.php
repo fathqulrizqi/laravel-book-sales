@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Validator;
 class GenreController extends Controller
 {
     public function index(){
+
+        // read genre
         $genres = Genre::all();
-        // $books = DB::select('SELECT * FROM books'); 
 
         if($genres->isEmpty()){
             return response()->json([
@@ -30,8 +31,8 @@ class GenreController extends Controller
         public function store(Request $request)
         {
             $validator = Validator::make($request->all(),[
-                "name" => "required string",
-                "description" => "required string"
+                "name" => "required|string",
+                "description" => "required|string"
             ]);
 
             if($validator->fails()){
@@ -41,7 +42,11 @@ class GenreController extends Controller
                 ], 422); // validasi create error
             }
 
-            $genre = Genre::create($validator);
+            // create genre
+            $genre = Genre::create([
+                "name" => $request->name,
+                "description" => $request->description
+            ]);
 
             return response()->json([
                 "success" => true,
