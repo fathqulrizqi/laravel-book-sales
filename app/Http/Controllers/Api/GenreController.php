@@ -17,21 +17,36 @@ class GenreController extends Controller
             return response()->json([
                 "status" => true,
                 "message" => "Resource data not found!",
-            ], 200); //response gagal
+            ], 200); //validasi read gagal
         }
 
         return response()->json([
             "status" => true,
             "message" => "Get All Resource",
             "data" => $genres
-        ], 200); //response berhasil
+        ], 200); //validasi read berhasil
     }
 
         public function store(Request $request)
         {
-            Validator::make($request->all(),[
+            $validator = Validator::make($request->all(),[
                 "name" => "required string",
                 "description" => "required string"
             ]);
+
+            if($validator->fails()){
+                return response()->json([
+                    "success" => false,
+                    "message" => $validator->errors()
+                ], 422); // validasi create error
+            }
+
+            $genre = Genre::create($validator);
+
+            return response()->json([
+                "success" => true,
+                "message" => "Resource added succesfully",
+                "data" => $genre
+            ], 201); // validasi create success
         }
 }
