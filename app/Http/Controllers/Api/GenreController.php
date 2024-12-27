@@ -54,4 +54,14 @@ class GenreController extends Controller
             "data" => $genre
         ], 201); // validasi create success
     }
+    
+    public function show(string $id){
+        $genre = Genre::find($id);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Get detail resource",
+            "data" => $genre
+        ], 200); // validasi create success
+    }
 }
