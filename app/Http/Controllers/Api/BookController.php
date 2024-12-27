@@ -72,6 +72,13 @@ public function store(Request $request)
     public function show(string $id){
         $book = Book::find($id);
 
+        if (!$book) {
+            return response()->json([
+                "success" => false,
+                "message" => "Resource not found"
+            ], 404); // validasi resource tidak ditemukan
+        }
+
         return response()->json([
             "success" => true,
             "message" => "Get detail resource",

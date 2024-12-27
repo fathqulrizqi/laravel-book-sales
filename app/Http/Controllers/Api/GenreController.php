@@ -58,6 +58,13 @@ class GenreController extends Controller
     public function show(string $id){
         $genre = Genre::find($id);
 
+        if (!$genre) {
+            return response()->json([
+                "success" => false,
+                "message" => "Resource not found"
+            ], 404); // validasi resource tidak ditemukan
+        }
+
         return response()->json([
             "success" => true,
             "message" => "Get detail resource",

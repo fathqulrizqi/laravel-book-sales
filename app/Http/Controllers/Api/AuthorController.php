@@ -61,4 +61,21 @@ class AuthorController extends Controller
             "data" => $author
         ], 201); // validasi create success
     }
+
+    public function show(string $id){
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+                "success" => false,
+                "message" => "Resource not found"
+            ], 404); // validasi resource tidak ditemukan
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Get detail resource",
+            "data" => $author
+        ], 200); // validasi resource ditemukan
+    }
 }
