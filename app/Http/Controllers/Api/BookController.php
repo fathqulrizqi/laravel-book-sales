@@ -68,4 +68,14 @@ public function store(Request $request)
             "data" => $book
         ], 201); // validasi create success
     }
+
+    public function show(string $id){
+        $book = Book::find($id);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Get detail resource",
+            "data" => $book
+        ], 200); // validasi create success
+    }
 }
