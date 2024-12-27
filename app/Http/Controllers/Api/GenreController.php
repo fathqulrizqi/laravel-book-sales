@@ -28,30 +28,30 @@ class GenreController extends Controller
         ], 200); //validasi read berhasil
     }
 
-        public function store(Request $request)
-        {
-            $validator = Validator::make($request->all(),[
-                "name" => "required|string",
-                "description" => "required|string"
-            ]);
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            "name" => "required|string",
+            "description" => "required|string"
+        ]);
 
-            if($validator->fails()){
-                return response()->json([
-                    "success" => false,
-                    "message" => $validator->errors()
-                ], 422); // validasi create error
-            }
-
-            // create genre
-            $genre = Genre::create([
-                "name" => $request->name,
-                "description" => $request->description
-            ]);
-
+        if($validator->fails()){
             return response()->json([
-                "success" => true,
-                "message" => "Resource added succesfully",
-                "data" => $genre
-            ], 201); // validasi create success
+                "success" => false,
+                "message" => $validator->errors()
+            ], 422); // validasi create error
         }
+
+        // create genre
+        $genre = Genre::create([
+            "name" => $request->name,
+            "description" => $request->description
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Resource added succesfully",
+            "data" => $genre
+        ], 201); // validasi create success
+    }
 }
