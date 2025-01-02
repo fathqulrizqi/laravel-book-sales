@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\GenreController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::post('/genres', [GenreController::class, 'store']);
 Route::get('/authors', [AuthorController::class, 'index']);
 Route::get('/authors/{id}', [AuthorController::class, 'show']);
 Route::post('/authors', [AuthorController::class, 'store']);
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
