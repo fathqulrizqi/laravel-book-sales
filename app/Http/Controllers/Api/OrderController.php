@@ -54,7 +54,7 @@ class OrderController extends Controller
         }
 
         // buat order number unik
-        $order_number = "ORD-" . strtoupper(uniqid());
+        $orderNumber = "ORD-" . strtoupper(uniqid());
 
         // hitung total harga 
         $totalAmount = $book->price * $request->quantity;
@@ -65,7 +65,7 @@ class OrderController extends Controller
 
         // insert data
         $order = Order::create([
-            "order_number" => $order_number,
+            "order_number" => $orderNumber,
             "customer_id" => $user->id,
             "book_id" => $request->book_id,
             "total_amount" => $totalAmount,
