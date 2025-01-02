@@ -1,38 +1,47 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
+use function Symfony\Component\String\b;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    /**
+     * Register a new user.
+     */
+    public function register(Request $request) {
         // Setup validator
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|max:8'
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8'
         ]);
 
-        // Check Validator
-        if ($validator->fails()){
+        // Check validator
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // Create user 
+        // Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
 
-        // Return response json useris created 
-        if ($user){
+        // Return response JSON user is created
+        if ($user) {
             return response()->json([
                 'success' => true,
-                'message' => 'User created succesfully',
+                'message' => 'User created successfully',
+                'data' => $user
             ], 201);
         }
 
@@ -40,41 +49,65 @@ class AuthController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'User creation failed'
-        ], 409);
-
+        ], 409); // Conflict
     }
 
 
-    public function login(Request $request){
-        // setup validator
+    /**
+     * Login user and return a token
+     */
+    public function login(Request $request) {
+        // Setup validator
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|string'
+            'password' => 'required'
         ]);
-    //    check validator
-        if ($validator->fails()){
+
+        // Check validator
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // get credentials from request
+        // Get credentials from request
         $credentials = $request->only('email', 'password');
 
-        if(!$token = auth()->guard('api')->attempt($credentials)){
+        // If auth failed
+        if(!$token = auth()->guard('api')->attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Email atau Password Anda Salah!'
+                'message' => 'Email atau Password Anda salah!'
             ], 401);
         }
 
+        // If auth success
         return response()->json([
             'success' => true,
-            'message' => 'Login Succesfullly',
-            'data' => [
-                'success' => true,
-                'user' => auth()->guard('api')->user(),
-                'token' => $token
-            ]
-            ], 200);
+            'message' => 'Login successfully',
+            'user' => auth()->guard('api')->user(),
+            'token' => $token
+        ], 200);
     }
-    
+
+    /**
+     * Logout user and invalidate token
+     */
+
+    public function logout(Request $request) {
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+
+            // If logout success
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout successfully!'
+            ], 200);
+
+        } catch (JWTException $e) {
+            // If logout failed
+            return response()->json([
+                'success' => false,
+                'message' => 'Logout failed!'
+            ], 500);
+        }
+    }
 }

@@ -30,7 +30,7 @@ class OrderController extends Controller
         }
 
         // buat order number unik
-        $order_number = uniqid();
+        $order_number = "ORD-" . strtoupper(uniqid());
 
 
         // insert data
