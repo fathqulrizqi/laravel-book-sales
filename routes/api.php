@@ -25,3 +25,7 @@ Route::post('/authors', [AuthorController::class, 'store']);
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+
+Route::get('/tes', function(){
+    return uniqid();
+});
